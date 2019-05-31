@@ -75,11 +75,24 @@ app.use(flash());
 require('./passport')(app);
     
 
+app.use((req, res, next) => {
+  app.locals.user = req.user;
+  next();
+})
+
 const index = require('./routes/index');
 app.use('/', index);
 
 const authRoutes = require('./routes/auth');
 app.use('/auth', authRoutes);
-      
+  
+// const check = (role) => (req, res, next) => {req.user && req.user.role == role ? admin : next()}
+
+const admin = require("./routes/admin");
+const user = require("./routes/user");
+
+app.use("/prueba", admin)
+app.use("/prueba", user);
+
 
 module.exports = app;
